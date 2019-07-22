@@ -1,6 +1,7 @@
 from readdicom import process
 import pydicom
 import argparse
+import sys
 import os
 
 # Parse the arguments
