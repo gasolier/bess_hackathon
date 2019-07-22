@@ -3,17 +3,51 @@ def testThickness(thickness):
         return (1, "thickness off")
     return (0, '')
 
-def runTests(file_name, dcm_data):
+def runTests(ankleData):
+    sliceLocations = []
     testResults = {
-        'fileTested' : file_name,
+        'fileTested' : "Ankle Tests",
         'tests' : []
     }
+    
+    for scan in ankleData:
+        dcm_data = scan['data']
 
-    passVal, msg = testThickness(dcm_data["slice_thickness"])
-    testResults['tests'].append({
-        'testType' : 'Slice Thickness',
-        'criteria' : passVal,
-        'passMessage' : msg
-    })
-
-    return testResults
+        passVal, msg = testThickness(dcm_data["slice_thickness"])
+        testResults['tests'].append({
+            'file' : scan['filename'],
+            'testType' : 'Ankle Slice Thickness',
+            'criteria' : passVal,
+            'passMessage' : msg
+        })
+        
+        sliceLocations.append(dcm_data['slice_location'])
+    
+    sliceLocations.sort()
+    continuousSlices = True
+    pastSliceDist = 'x'
+    
+    for i in range(1, len(sliceLocations)):
+        sliceDist = sliceLocations[i] - sliceLocations[i - 1]
+        if pastSliceDist != 'x':
+            if sliceDist != pastSliceDist:
+                continuousSlices = False
+                break
+        pastSliceDist = sliceDist
+    
+    if not continuousSlices:
+        testResults['tests'].append({
+            'file' : 'N/A',
+            'testType' : 'Ankle Continuous Slices',
+            'criteria' : 1,
+            'passMessage' : "Slices are not continuous"
+        })
+    else:
+        testResults['tests'].append({
+            'file' : 'N/A',
+            'testType' : 'Ankle Continuous Slices',
+            'criteria' : 0,
+            'passMessage' : "Slices are continuous"
+        })
+    
+    return [testResults]

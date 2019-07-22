@@ -39,17 +39,12 @@ all_tests = []
 
 # run the test
 for scanType in patientData.keys():
-    for scan in patientData[scanType]:
-        # print(f"testing {scan['filename']}")
-        if scanType == "hipScans":
-            # print("testing hip")
-            all_tests.append(hipTests.runTests(scan['filename'], scan['data']))
-        elif scanType == "kneeScans":
-            # print("testing knees")
-            all_tests.append(kneeTests.runTests(scan['filename'], scan['data']))
-        elif scanType == "ankleScans":
-            # print("testing ankles")
-            all_tests.append(ankleTests.runTests(scan['filename'], scan['data']))
+    if scanType == "hipScans":
+        all_tests += hipTests.runTests(patientData[scanType])
+    elif scanType == "kneeScans":
+        all_tests += kneeTests.runTests(patientData[scanType])
+    elif scanType == "ankleScans":
+        all_tests += ankleTests.runTests(patientData[scanType])
 
 # write to the log file
 writeLogs.write_logs(all_tests)
