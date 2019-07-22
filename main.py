@@ -1,5 +1,5 @@
 from readdicom import process
-import hipTests
+import hipTests, kneeTests, ankleTests
 import writeLogs
 import pydicom
 import argparse
@@ -35,14 +35,21 @@ for root, dirs, _ in os.walk(dir_path, topdown=False):
                 elif d == "Ankle":
                     patientData["ankleScans"].append({'filename' : f, 'data' : process(os.path.join(next_down, f))})
 
+all_tests = []
+
 # run the test
 for scanType in patientData.keys():
     for scan in patientData[scanType]:
-        print(f"testing {scan['filename']}")
+        # print(f"testing {scan['filename']}")
         if scanType == "hipScans":
-            print("testing hip")
-            hipTests.runTests(scan['data'])
+            # print("testing hip")
+            all_tests.append(hipTests.runTests(scan['filename'], scan['data']))
         elif scanType == "kneeScans":
-            print("testing knees")
+            # print("testing knees")
+            all_tests.append(kneeTests.runTests(scan['filename'], scan['data']))
         elif scanType == "ankleScans":
-            print("testing ankles")
+            # print("testing ankles")
+            all_tests.append(ankleTests.runTests(scan['filename'], scan['data']))
+
+# write to the log file
+writeLogs.write_logs(all_tests)

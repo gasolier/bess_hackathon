@@ -3,17 +3,15 @@ def write_logs(test_results):
     f = open("logs.txt", "a+")
 
     for result in test_results:
-        criteria = result["criteria"]
-        testType = result["testType"]
+        # print(resultType)
         fileTested = result["fileTested"]
-        passMessage = result["passMessage"]
-        
         f.write(f"Filename: {fileTested}\n")
-        f.write(f"Test: {testType}\n")
-        
-        if criteria == 0:
-            f.write("Criteria: Passed") 
-        elif criteria == 1:
-            f.write(f"Criteria: Failed: error: {passMessage}")
+
+        for test in result['tests']:
+            testType = test["testType"]
+            criteria = test["criteria"]
+            passMessage = test["passMessage"]
+            
+            f.write(f"  Test: {testType} - {'passed' if criteria == 0 else 'failed: ' + passMessage}\n")
         
         f.write('\n')
