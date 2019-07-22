@@ -9,8 +9,9 @@ def write_logs(test_results):
         
         testNum = 0
         failedNum = 0
-
+        #print(result)
         for test in result['tests']:
+            #print(test)
             testNum += 1
             fileName = test['file']
             testType = test["testType"]
@@ -21,7 +22,7 @@ def write_logs(test_results):
             if criteria != 0:
                 failedNum += 1
                 f.write(f"\tFailed Test: {testType}\n")
-                f.write(f'\t\tFile: {fileName}')
+                f.write(f'\t\tFile: {fileName}\n')
                 f.write(f'\t\tReason: {passMessage}\n')
         
         f.write(f"\tPassed {testNum - failedNum}/{testNum} tests\n")

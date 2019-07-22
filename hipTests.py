@@ -1,5 +1,6 @@
 def testThickness(thickness):
     if thickness < 1.25 or thickness > 2:
+        # print("Failed test, thickness = ", thickness)
         return (1, "thickness off")
     return (0, '')
 
@@ -16,7 +17,7 @@ def runTests(hipData):
         passVal, msg = testThickness(dcm_data["slice_thickness"])
         testResults['tests'].append({
             'file' : scan['filename'],
-            'testType' : 'Hip Slice Thickness',
+            'testType' : 'Slice Thickness',
             'criteria' : passVal,
             'passMessage' : msg
         })
@@ -28,8 +29,11 @@ def runTests(hipData):
     pastSliceDist = 'x'
     
     for i in range(1, len(sliceLocations)):
+        # calculate the distance from the last slice
         sliceDist = sliceLocations[i] - sliceLocations[i - 1]
         if pastSliceDist != 'x':
+            # if the distance from this slice to the last is not equal to the
+            # last recorded distance then we've skipped a slice
             if sliceDist != pastSliceDist:
                 continuousSlices = False
                 break
@@ -38,14 +42,14 @@ def runTests(hipData):
     if not continuousSlices:
         testResults['tests'].append({
             'file' : 'N/A',
-            'testType' : 'Hip Continuous Slices',
+            'testType' : 'Continuous Slices',
             'criteria' : 1,
             'passMessage' : "Slices are not continuous"
         })
     else:
         testResults['tests'].append({
             'file' : 'N/A',
-            'testType' : 'Hip Continuous Slices',
+            'testType' : 'Continuous Slices',
             'criteria' : 0,
             'passMessage' : "Slices are continuous"
         })

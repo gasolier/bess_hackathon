@@ -16,7 +16,7 @@ def runTests(kneeData):
         passVal, msg = testThickness(dcm_data["slice_thickness"])
         testResults['tests'].append({
             'file' : scan['filename'],
-            'testType' : 'Knee Slice Thickness',
+            'testType' : 'Slice Thickness',
             'criteria' : passVal,
             'passMessage' : msg
         })
@@ -38,14 +38,14 @@ def runTests(kneeData):
     if not continuousSlices:
         testResults['tests'].append({
             'file' : 'N/A',
-            'testType' : 'Knee Continuous Slices',
+            'testType' : 'Continuous Slices',
             'criteria' : 1,
             'passMessage' : "Slices are not continuous"
         })
     else:
         testResults['tests'].append({
             'file' : 'N/A',
-            'testType' : 'Knee Continuous Slices',
+            'testType' : 'Continuous Slices',
             'criteria' : 0,
             'passMessage' : "Slices are continuous"
         })
