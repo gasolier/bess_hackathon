@@ -1,5 +1,5 @@
 def testThickness(thickness):
-    if thickness < 1.25 and thickness > 2.5:
+    if thickness < 1.25 or thickness > 2.5:
         return (1, "thickness off")
     return (0, '')
 
